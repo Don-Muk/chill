@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -13,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     database: 'chill',
     autoLoadEntities: true,
     synchronize: true,
-  })],
+  }), SearchModule],
   controllers: [AppController],
   providers: [AppService],
 })
