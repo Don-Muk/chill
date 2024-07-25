@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Music } from "./entities/music.entity";
+import { MusicEntity } from "./entities/music.entity";
 import { Repository } from "typeorm";
 import { CreateMusicDto } from "./dto/create-music.dto";
 import { UpdateMusicDto } from "./dto/update-music.dto";
@@ -8,18 +8,17 @@ import { UpdateMusicDto } from "./dto/update-music.dto";
 @Injectable()
 export class MusicRepository {
     constructor(
-        @InjectRepository(Music)
-        private readonly MusicRepo: Repository<Music>
+        @InjectRepository(MusicEntity)
+        private readonly MusicRepo: Repository<MusicEntity>
     ) { }
 
-    create(data: CreateMusicDto) {
+    async create(data: CreateMusicDto) {
         const newMusic = this.MusicRepo.create(data)
 
-        const artist = new Artist()
         artist.id = data.artistId
         newMusic.artist = artist
 
-        return this.MusicRepo.save(newMusic)
+        return await this.MusicRepo.save(newMusic)
     }
 
     findAll() {

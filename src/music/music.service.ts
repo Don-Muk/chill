@@ -8,8 +8,8 @@ export class MusicService {
 
   constructor(private readonly musicRepository:MusicRepository){}
 
-  create(createMusicDto: CreateMusicDto) {
-    return this.musicRepository.create(createMusicDto);
+  async create(createMusicDto: CreateMusicDto) {
+    return await this.musicRepository.create(createMusicDto);
   }
 
   findAll() {

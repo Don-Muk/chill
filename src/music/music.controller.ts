@@ -8,8 +8,8 @@ export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
   @Post()
-  create(@Body() createMusicDto: CreateMusicDto) {
-    return this.musicService.create(createMusicDto);
+  async create(@Body() createMusicDto: CreateMusicDto) {
+    return await this.musicService.create(createMusicDto);
   }
 
   @Get()
