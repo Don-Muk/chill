@@ -41,4 +41,12 @@ export class AuthorRepository {
     remove(id: number){
         return this.authorRepo.softDelete({id})
     }
+
+    findByAuthor(search: string) {
+        return this.authorRepo
+        .createQueryBuilder('author')
+        .where('author.firstName Like :search', { search: `%${search}%` })
+        .orWhere('author.lastName Like :search', { search: `%${search}%` })
+        .getMany();
+    }
 }

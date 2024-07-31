@@ -41,4 +41,11 @@ export class AlbumsRepository {
     remove(id: number){
         return this.albumsRepo.softDelete({id})
     }
+
+    findByAlbum(search: string) {
+        return this.albumsRepo
+            .createQueryBuilder('albums')
+            .where('albums.title Like :search', { search: `%${search}%` })
+            .getMany();
+    }
 }
