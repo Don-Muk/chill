@@ -15,7 +15,7 @@ export class Author {
     @Column({type: 'longtext'})
     biography: string;
 
-    @OneToMany(() => MusicEntity, music => music.author);
+    @OneToMany(() => MusicEntity, music => music.author)
     music: MusicEntity
 
     @CreateDateColumn()
