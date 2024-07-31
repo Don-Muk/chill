@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorsModule } from './authors/authors.module';
+import { MusicModule } from './music/music.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -11,10 +12,10 @@ import { AuthorsModule } from './authors/authors.module';
     port: 3306,
     username: 'root',
     password: 'root',
-    database: 'chill',
+    database: 'testirovka',
     autoLoadEntities: true,
     synchronize: true,
-  }),AuthorsModule],
+  }),AuthorsModule, MusicModule],
   controllers: [AppController],
   providers: [AppService],
 })
