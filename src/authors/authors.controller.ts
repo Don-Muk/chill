@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { AuthorService } from './authors.service';
 import { CreateAuthorDto } from './dtos/create-authors.dto';
 import { UpdateAuthorDto } from './dtos/update-authors.dto';
@@ -14,7 +14,11 @@ export class AuthorController {
 
     @Get(':id')
     findOne(@Param('id') id: string){
-        return this.authorService.findOne(+id);
+        const author = this.authorService.findOne(+id);
+        if (!author) {
+            throw new NotFoundException(`Author with ID ${id} not found`); // Use NotFoundException for better error handling
+        }
+        return author;
     }
 
     @Post()
