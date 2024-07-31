@@ -21,8 +21,8 @@ export class Albums {
     createdAt: Date;
 
     @UpdateDateColumn()
-    updateAt: Date;
+    updatedAt: Date;
 
     @DeleteDateColumn()
-    deleteAt: Date;
+    deletedAt: Date;
 }

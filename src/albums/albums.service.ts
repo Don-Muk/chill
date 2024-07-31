@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AlbumsRepository } from './albums.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -17,7 +17,7 @@ export class AlbumsService {
     async findOne(id: number){
         const album = await this.albumsRepository.findOne(id);
         if (!album) {
-            throw new Error(`Album with ID ${id} not found`);
+            throw new NotFoundException(`Album with ID ${id} not found`);
         }
         return album;
     }
@@ -30,7 +30,7 @@ export class AlbumsService {
     async update(id: number, data: UpdateAlbumsDto): Promise<Albums> {
         const album = await this.albumsRepository.findOne(id);
         if (!album) {
-            throw new Error(`Album with ID ${id} not found`);
+            throw new NotFoundException(`Album with ID ${id} not found`);
         }
         await this.albumsRepo.update(id, data);
         return this.findOne(id);
