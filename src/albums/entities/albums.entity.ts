@@ -1,3 +1,4 @@
+import { MusicEntity } from "src/music/entities/music.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -14,8 +15,8 @@ export class Albums {
     @Column()
     artistName: string;
 
-    @OneToMany(() => Music, music => music.albums)
-    music: Music;
+    @OneToMany(() => MusicEntity, music => music.albums)
+    music: MusicEntity;
 
     @CreateDateColumn()
     createdAt: Date;
