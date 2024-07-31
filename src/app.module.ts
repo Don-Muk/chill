@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AlbumsModule } from './albums/albums.module';
 import { AuthorsModule } from './authors/authors.module';
 import { MusicModule } from './music/music.module';
 
@@ -15,7 +16,7 @@ import { MusicModule } from './music/music.module';
     database: 'testirovka',
     autoLoadEntities: true,
     synchronize: true,
-  }),AuthorsModule, MusicModule],
+  }),AlbumsModule, AuthorsModule, MusicModule],
   controllers: [AppController],
   providers: [AppService],
 })
