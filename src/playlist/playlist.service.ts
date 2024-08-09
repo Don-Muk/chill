@@ -60,15 +60,15 @@ export class PlaylistService {
         const oldOrder = oldPlaylist.order;
 
         if (newOrder > oldOrder) {
-            for (const playlist of playlists) {
-                if (playlist.order > oldOrder && playlist.order <= newOrder) {
-                    playlist.order--;
+            for (const music of playlists) {
+                if (music.order > oldOrder && music.order <= newOrder) {
+                    music.order--;
                 }
             }
         } else if (newOrder < oldOrder) {
-            for (const playlist of playlists) {
-                if (playlist.order >= newOrder && playlist.order < oldOrder) {
-                    playlist.order++;
+            for (const music of playlists) {
+                if (music.order >= newOrder && music.order < oldOrder) {
+                    music.order++;
                 }
             }
         }
