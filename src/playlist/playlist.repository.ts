@@ -42,4 +42,11 @@ export class PlaylistRepository {
     remove(id: number){
         return this.playlistRepo.softDelete({id})
     }
+
+    findOneBy(id: number, options: { relations?: string[] }) {
+        return this.playlistRepo.findOne({
+            where: { id },
+            relations: options.relations || []
+        });
+    }
 }

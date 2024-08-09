@@ -31,4 +31,14 @@ export class PlaylistController {
     remove(@Param('id') id: string){
         return this.playlistService.remove(+id);
     }
+
+    @Post(':playlistId/music/:musicId')
+    addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
+        return this.playlistService.addMusicToPlaylist(+playlistId, +musicId);
+    }
+
+    @Delete(':playlistId/music/:musicId')
+    removeMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
+        return this.playlistService.removeMusicFromPlaylist(+playlistId, +musicId);
+    }
 }

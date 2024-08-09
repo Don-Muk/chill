@@ -5,9 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { PlaylistRepository } from './playlist.repository';
+import { MusicRepository } from 'src/music/music.repository';
+import { UserRepository } from 'src/user/user.repository';
+
 @Injectable()
 export class PlaylistService {
-    constructor(@InjectRepository(Playlist) private readonly playlistRepo: Repository<Playlist>, private readonly playlistRepository: PlaylistRepository){}
+    constructor(@InjectRepository(Playlist) private readonly playlistRepo: Repository<Playlist>, private readonly playlistRepository: PlaylistRepository, 
+    private readonly userRepository: UserRepository, private readonly musicRepository: MusicRepository){}
 
     findAll(){
         return this.playlistRepository.findAll();
@@ -23,8 +27,9 @@ export class PlaylistService {
         return playlist;
     }
 
-    create(data: CreatePlaylistDto): Promise<Playlist> {
+    async create(data: CreatePlaylistDto): Promise<Playlist> {
         const newPlaylist = this.playlistRepo.create(data);
+        newPlaylist.user = await this.userRepository.findOne(data.userId);
         return this.playlistRepo.save(newPlaylist);
     }
     
@@ -33,6 +38,10 @@ export class PlaylistService {
         if (!playlist) {
             throw new NotFoundException(`Playlist with ID ${id} not found`);
         } 
+
+        if (data.userId) {
+            playlist.user = await this.userRepository.findOne(data.userId);
+        }
 
         if (data.order !== undefined && data.order !== playlist.order) {
             await this.reorderPlaylists(id, data.order);
@@ -76,4 +85,37 @@ export class PlaylistService {
         oldPlaylist.order = newOrder;
         await this.playlistRepo.save(playlists);
     }
+
+    async addMusicToPlaylist(playlistId: number, musicId: number): Promise<Playlist> {
+        const playlist = await this.playlistRepository.findOneBy(playlistId, { relations: ['music'] });
+
+        if (!playlist) {
+            throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
+        }
+
+        const music = await this.musicRepository.findOne(musicId);
+        if (!music) {
+            throw new NotFoundException(`Music with ID ${musicId} not found`);
+        }
+
+        playlist.music.push(music);
+        return this.playlistRepo.save(playlist);
+    }
+
+    async removeMusicFromPlaylist(playlistId: number, musicId: number): Promise<Playlist> {
+        const playlist = await this.playlistRepository.findOneBy(playlistId, { relations: ['music'] });
+    
+        if (!playlist) {
+            throw new NotFoundException(`Playlist with ID ${playlistId} not found`);
+        }
+    
+        const musicIndex = playlist.music.findIndex(m => m.id === musicId);
+        if (musicIndex === -1) {
+            throw new NotFoundException(`Music with ID ${musicId} not found in playlist`);
+        }
+    
+        playlist.music.splice(musicIndex, 1);
+        return this.playlistRepo.save(playlist);
+    }
+
 }

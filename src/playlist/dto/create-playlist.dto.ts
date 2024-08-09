@@ -10,4 +10,7 @@ export class CreatePlaylistDto {
 
     @IsInt()
     order?: number; 
+
+    @IsInt()
+    userId: number;
 }
