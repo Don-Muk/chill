@@ -16,7 +16,7 @@ export class User {
     password: string;
 
     @OneToMany(() => Playlist, playlist => playlist.user)
-    playlist: Playlist;
+    playlist: Playlist[];
 
     @CreateDateColumn()
     createdAt: Date;

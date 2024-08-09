@@ -7,4 +7,7 @@ export class CreatePlaylistDto {
 
     @IsString()
     description: string;
+
+    @IsInt()
+    order?: number; 
 }

@@ -15,9 +15,11 @@ export class PlaylistService {
 
     async findOne(id: number){
         const playlist = await this.playlistRepository.findOne(id);
+
         if (!playlist) {
             throw new NotFoundException(`Playlist with ID ${id} not found`);
         }
+
         return playlist;
     }
 
@@ -31,6 +33,11 @@ export class PlaylistService {
         if (!playlist) {
             throw new NotFoundException(`Playlist with ID ${id} not found`);
         } 
+
+        if (data.order !== undefined && data.order !== playlist.order) {
+            await this.reorderPlaylists(id, data.order);
+        }
+
         await this.playlistRepo.update(id, data);
         return this.findOne(id);
     }
@@ -38,5 +45,35 @@ export class PlaylistService {
     async remove(id: number){
         const playlist = await this.findOne(id);
         await this.playlistRepo.remove(playlist);
+    }
+
+    async reorderPlaylists(id: number, newOrder: number) {
+        const playlists = await this.playlistRepo.find({
+            order: { order: 'ASC' }
+        });
+
+        const oldPlaylist = playlists.find(p => p.id === id);
+        if (!oldPlaylist) {
+            throw new NotFoundException(`Playlist with ID ${id} not found`);
+        }
+
+        const oldOrder = oldPlaylist.order;
+
+        if (newOrder > oldOrder) {
+            for (const playlist of playlists) {
+                if (playlist.order > oldOrder && playlist.order <= newOrder) {
+                    playlist.order--;
+                }
+            }
+        } else if (newOrder < oldOrder) {
+            for (const playlist of playlists) {
+                if (playlist.order >= newOrder && playlist.order < oldOrder) {
+                    playlist.order++;
+                }
+            }
+        }
+
+        oldPlaylist.order = newOrder;
+        await this.playlistRepo.save(playlists);
     }
 }

@@ -13,6 +13,9 @@ export class Playlist {
     @Column({nullable: true})
     description: string;
 
+    @Column({ default: 0 })
+    order: number;
+
     @ManyToMany(() => MusicEntity, music => music.playlist)
     music: MusicEntity[];
 

@@ -12,6 +12,7 @@ export class PlaylistRepository {
     findAll(){
         return this.playlistRepo
         .createQueryBuilder('playlist')
+        .orderBy('playlist.order', 'ASC')
         .getMany()
     }
 
