@@ -46,7 +46,7 @@ export class PlaylistRepository {
     findOneBy(id: number, options: { relations?: string[] }) {
         return this.playlistRepo.findOne({
             where: { id },
-            relations: options.relations || []
+            relations: options.relations
         });
     }
 }

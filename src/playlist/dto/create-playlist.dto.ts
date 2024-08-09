@@ -1,16 +1,16 @@
-import { IsInt, IsNotEmpty, IsString, Min } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator";
 
 export class CreatePlaylistDto {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    readonly name: string;
 
-    @IsString()
-    description: string;
+    @IsOptional()
+    @IsNumber()
+    @Min(0)
+    readonly order?: number;
 
-    @IsInt()
-    order?: number; 
-
-    @IsInt()
-    userId: number;
+    @IsNumber()
+    @IsNotEmpty()
+    readonly userId: number;
 }

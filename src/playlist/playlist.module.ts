@@ -8,7 +8,7 @@ import { UserModule } from 'src/user/user.module';
 import { MusicModule } from 'src/music/music.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Playlist]),UserModule,MusicModule],
+  imports: [TypeOrmModule.forFeature([Playlist]), UserModule, MusicModule],
   controllers: [PlaylistController],
   providers: [PlaylistService, PlaylistRepository],
 })
