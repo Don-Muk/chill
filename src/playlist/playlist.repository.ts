@@ -9,23 +9,23 @@ import { CreatePlaylistDto } from './dto/create-playlist.dto';
 export class PlaylistRepository {
     constructor(@InjectRepository(Playlist) private readonly playlistRepo: Repository<Playlist>){}
 
-    findAll(){
-        return this.playlistRepo
+    async findAll(){
+        return await this.playlistRepo
         .createQueryBuilder('playlist')
         .orderBy('playlist.order', 'ASC')
         .getMany()
     }
 
-    findOne(id: number){
-        return this.playlistRepo
+    async findOne(id: number){
+        return await this.playlistRepo
         .createQueryBuilder('playlist')
         .andWhere('playlist.id = :id', {id})
         .getOne()
     }
 
-    create(data: CreatePlaylistDto){
+    async create(data: CreatePlaylistDto){
         const newPlaylist = this.playlistRepo.create(data);
-        return this.playlistRepo.save(newPlaylist);
+        return await this.playlistRepo.save(newPlaylist);
     }
 
     async update(id: number, data: UpdatePlaylistDto){
@@ -39,12 +39,12 @@ export class PlaylistRepository {
         return this.playlistRepo.findOneBy({id})
     }
 
-    remove(id: number){
-        return this.playlistRepo.softDelete({id})
+    async remove(id: number){
+        return await this.playlistRepo.softDelete({id})
     }
 
-    findOneBy(id: number, options: { relations?: string[] }) {
-        return this.playlistRepo.findOne({
+    async findOneBy(id: number, options: { relations?: string[] }) {
+        return await this.playlistRepo.findOne({
             where: { id },
             relations: options.relations
         });
