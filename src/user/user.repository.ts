@@ -10,14 +10,14 @@ import * as bcrypt from 'bcryptjs';
 @Injectable()
 export class UserRepository {
   constructor(@InjectRepository(User) private readonly userRepo: Repository<User>) {}
-  findAll() {
-    return this.userRepo
+  async findAll() {
+    return await this.userRepo
     .createQueryBuilder('user')
     .getMany();
   }
 
-  findOne(id: number) {
-    return this.userRepo
+  async findOne(id: number) {
+    return await this.userRepo
     .createQueryBuilder('user')
     .andWhere('user.id = :id', {id})
     .getOne();
@@ -44,7 +44,7 @@ export class UserRepository {
     return this.userRepo.findOneBy({id});
   }
 
-  remove(id: number) {
-    return this.userRepo.softDelete({id});
+  async remove(id: number) {
+    return await this.userRepo.softDelete({id});
   }
 }
