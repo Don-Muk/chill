@@ -62,7 +62,7 @@ export class PlaylistController {
         }
     }
 
-    @Post(':playlistId/music/:musicId')
+    @Post(':playlistId/:musicId')
     async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
         try {
             return await this.playlistService.addMusicToPlaylist(+playlistId, +musicId);
@@ -74,7 +74,7 @@ export class PlaylistController {
         }
     }
 
-    @Delete(':playlistId/music/:musicId')
+    @Delete(':playlistId/:musicId')
     async removeMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
         try {
             return await this.playlistService.removeMusicFromPlaylist(+playlistId, +musicId);
