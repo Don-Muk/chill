@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Listeners } from './entities/listeners.entity';
 import { Repository } from 'typeorm';
@@ -10,31 +10,51 @@ import { UpdateListenersDto } from './dto/update-listeners.dto';
 export class ListenersService {
     constructor(@InjectRepository(Listeners) private readonly listenersRepo: Repository<Listeners>, private readonly ListenersRepository: ListenersRepository){}
 
-    findAll(){
-        return this.ListenersRepository.findAll();
-    }
-
-    async findOne(id: number){
-        const listeners = await this.ListenersRepository.findOne(id);
-        if (!listeners) {
-            throw new NotFoundException(`Listeners with ID ${id} not found`);
+    async findAll() {
+        try {
+            return await this.ListenersRepository.findAll();
+        } catch (error) {
+            throw new InternalServerErrorException('Error fetching listeners');
         }
-        return listeners;
     }
 
-    create(data: CreateListenersDto): Promise<Listeners> {
-        const newListeners = this.listenersRepo.create(data);
-        return this.listenersRepo.save(newListeners);
+    async findOne(id: number) {
+        try {
+            const listeners = await this.ListenersRepository.findOne(id);
+            if (!listeners) {
+                throw new NotFoundException(`Listeners with ID ${id} not found`);
+            }
+            return listeners;
+        } catch (error) {
+            throw new InternalServerErrorException('Error fetching listener');
+        }
+    }
+
+    async create(data: CreateListenersDto): Promise<Listeners> {
+        try {
+            const newListeners = this.listenersRepo.create(data);
+            return await this.listenersRepo.save(newListeners);
+        } catch (error) {
+            throw new InternalServerErrorException('Error creating listener');
+        }
     }
     
     async update(id: number, data: UpdateListenersDto): Promise<Listeners> {
-        const listeners = await this.ListenersRepository.findOne(id);
-        await this.listenersRepo.update(id, data);
-        return listeners;
+        try {
+            const listeners = await this.ListenersRepository.findOne(id);
+            await this.listenersRepo.update(id, data);
+            return listeners;
+        } catch (error) {
+            throw new InternalServerErrorException('Error updating listener');
+        }
     }
 
-    async remove(id: number){
-        const listeners = await this.findOne(id);
-        await this.listenersRepo.remove(listeners);
+    async remove(id: number) {
+        try {
+            const listeners = await this.findOne(id);
+            await this.listenersRepo.remove(listeners);
+        } catch (error) {
+            throw new InternalServerErrorException('Error removing listener');
+        }
     }
 }
