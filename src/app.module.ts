@@ -9,6 +9,7 @@ import { SearchModule } from './search/search.module';
 import { UserModule } from './user/user.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { ListenersModule } from './listeners/listeners.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -16,11 +17,11 @@ import { ListenersModule } from './listeners/listeners.module';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'root',
-    database: 'testirovka',
+    password: 'B.vardidze03',
+    database: 'seeSharp',
     autoLoadEntities: true,
     synchronize: true,
-  }),AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule],
+  }),AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -13,8 +13,14 @@ export class User {
     @Column({type: 'varchar', length: 255})
     email: string;
 
-    @Column({type: 'varchar'})
+    @Column({type: 'varchar', select: false})
     password: string;
+
+    @Column({ default: 0 })
+    loginAttempts: number;
+
+    @Column({ type: 'date', default: null})
+    lockedDate: Date;
 
     @ManyToMany(() => Playlist, playlist => playlist.user)
     playlist: Playlist[];
