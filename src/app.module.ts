@@ -10,6 +10,9 @@ import { UserModule } from './user/user.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { ListenersModule } from './listeners/listeners.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AdminGuard } from './auth/guards/admin.guard';
+import { PublicGuard } from './auth/guards/public.guard';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -17,12 +20,18 @@ import { AuthModule } from './auth/auth.module';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'B.vardidze03',
-    database: 'seeSharp',
+    password: 'root',
+    database: 'testirovka',
+    entities: [],
     autoLoadEntities: true,
     synchronize: true,
-  }),AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule, AuthModule],
+  }),
+  JwtModule.register({
+    secret: 'seeSharpSecurity',
+    global: true,
+  }),
+  AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AdminGuard, PublicGuard],
 })
 export class AppModule {}

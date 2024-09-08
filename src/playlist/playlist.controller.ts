@@ -1,13 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { PlaylistService } from './playlist.service';
 import { NotFoundException } from '@nestjs/common';
+import { PublicGuard } from 'src/auth/guards/public.guard';
+import { UserGuard } from 'src/auth/guards/user.guard';
 
 @Controller('playlist')
 export class PlaylistController {
     constructor(private readonly playlistService: PlaylistService){}
 
+    @UseGuards(UserGuard)
     @Get()
     async findAll() {
         try {
@@ -17,6 +20,7 @@ export class PlaylistController {
         }
     }
 
+    @UseGuards(UserGuard)
     @Get(':id')
     async findOne(@Param('id') id: string) {
         try {
@@ -29,6 +33,7 @@ export class PlaylistController {
         }
     }
 
+    @UseGuards(UserGuard)
     @Post()
     async create(@Body() data: CreatePlaylistDto) {
         try {
@@ -38,6 +43,7 @@ export class PlaylistController {
         }
     }
 
+    @UseGuards(UserGuard)
     @Patch(':id')
     async update(@Param('id') id: string, @Body() data: UpdatePlaylistDto) {
         try {
@@ -50,6 +56,7 @@ export class PlaylistController {
         }
     }
 
+    @UseGuards(UserGuard)
     @Delete(':id')
     async remove(@Param('id') id: string) {
         try {
@@ -62,6 +69,7 @@ export class PlaylistController {
         }
     }
 
+    @UseGuards(UserGuard)
     @Post(':playlistId/:musicId')
     async addMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
         try {
@@ -74,6 +82,7 @@ export class PlaylistController {
         }
     }
 
+    @UseGuards(UserGuard)
     @Delete(':playlistId/:musicId')
     async removeMusic(@Param('playlistId') playlistId: string, @Param('musicId') musicId: string) {
         try {

@@ -24,7 +24,7 @@ export class UserRepository {
   }
 
   async findByEmailAndPassword(email: string) {
-    return this.userRepo.findOne({ where:  { email: email }, select: { email: true, password: true, loginAttempts: true, name: true } });
+    return this.userRepo.findOne({ where:  { email: email }, select: { email: true, password: true, loginAttempts: true, name: true, id: true, role: true } });
   }
 
   async incrementAttempts(id : number) {
@@ -57,6 +57,7 @@ export class UserRepository {
       name: data.name,
       email: data.email,
       password: hashedPassword,
+      role: data.role
     });
 
     const saved = await this.userRepo.save(newUser);
