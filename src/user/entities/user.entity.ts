@@ -1,5 +1,6 @@
+import { Listeners } from "src/listeners/entities/listeners.entity";
 import { Playlist } from "src/playlist/entities/playlist.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -17,6 +18,9 @@ export class User {
 
     @ManyToMany(() => Playlist, playlist => playlist.user)
     playlist: Playlist[];
+
+    @OneToMany(() => Listeners, listeners => listeners.user)
+    listeners: Listeners[];
 
     @CreateDateColumn()
     createdAt: Date;
