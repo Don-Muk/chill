@@ -37,6 +37,6 @@ export class ListenersRepository {
     }
 
     remove(id: number){
-        return this.listenersRepo.softDelete({id})
+        return this.listenersRepo.softDelete({ id });
     }
 }
