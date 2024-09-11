@@ -4,6 +4,7 @@ import { MusicEntity } from "./entities/music.entity";
 import { Repository } from "typeorm";
 import { CreateMusicDto } from "./dto/create-music.dto";
 import { UpdateMusicDto } from "./dto/update-music.dto";
+import { Author } from "src/authors/entities/authors.entity";
 
 @Injectable()
 export class MusicRepository {
@@ -15,8 +16,9 @@ export class MusicRepository {
     async create(data: CreateMusicDto) {
         const newMusic = this.MusicRepo.create(data)
 
+        const artist = new Author()
         artist.id = data.artistId
-        newMusic.artist = artist
+        newMusic.author = artist
 
         return await this.MusicRepo.save(newMusic)
     }
@@ -50,5 +52,12 @@ export class MusicRepository {
         return this.MusicRepo.createQueryBuilder('music')
             .where('music.id = :id', { id })
             .getOne()
+    }
+
+    findByMusic(search: string) {
+        return this.MusicRepo
+        .createQueryBuilder('music')
+        .where('music.name Like :search', { search: `%${search}%` })
+        .getMany();
     }
 }
