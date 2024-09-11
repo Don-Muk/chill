@@ -9,6 +9,9 @@ import { SearchModule } from './search/search.module';
 import { UserModule } from './user/user.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { ListenersModule } from './listeners/listeners.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -20,7 +23,12 @@ import { ListenersModule } from './listeners/listeners.module';
     database: 'testirovka',
     autoLoadEntities: true,
     synchronize: true,
-  }),AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule],
+  }),
+  JwtModule.register({
+    global: true,
+    secret: 'secret'
+  }),
+  AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
