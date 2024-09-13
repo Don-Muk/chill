@@ -33,18 +33,6 @@ export class UserRepository {
     await this.userRepo.update(user.id, user);
   }
 
-  async lockedDate(id : number) {
-    const user = await this.userRepo.findOne({ where: { id } });
-    user.lockedDate = new Date();
-    await this.userRepo.update(user.id, user);
-  }
-
-  async unlockedUser(id : number) {
-    const user = await this.userRepo.findOne({ where: { id } });
-    user.lockedDate = null;
-    await this.userRepo.update(user.id, user);
-  }
-
   async resetIncrementAttempts(id : number) {
     const user = await this.userRepo.findOne({ where: { id } });
     user.loginAttempts = 0;

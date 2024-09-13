@@ -29,9 +29,6 @@ export class User {
     @Column({ default: 0 })
     loginAttempts: number;
 
-    @Column({ type: 'date', default: null})
-    lockedDate: Date;
-
     @ManyToMany(() => Playlist, playlist => playlist.user)
     playlist: Playlist[];
 
