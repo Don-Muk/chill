@@ -23,14 +23,34 @@ export class UserRepository {
     .getOne();
   }
 
+  async findByEmailAndPassword(email: string) {
+    return this.userRepo.findOne({ where:  { email: email }, select: { email: true, password: true, loginAttempts: true, name: true, id: true, role: true } });
+  }
+
+  async incrementAttempts(id : number) {
+    const user = await this.userRepo.findOne({ where: { id } });
+    user.loginAttempts++;
+    await this.userRepo.update(user.id, user);
+  }
+
+  async resetIncrementAttempts(id : number) {
+    const user = await this.userRepo.findOne({ where: { id } });
+    user.loginAttempts = 0;
+    await this.userRepo.update(user.id, user);
+  }
+
   async create(data: CreateUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 15);
     const newUser = this.userRepo.create({
       name: data.name,
       email: data.email,
       password: hashedPassword,
+      role: data.role
     });
-    return this.userRepo.save(newUser);
+
+    const saved = await this.userRepo.save(newUser);
+    delete saved.password;
+    return saved;
   }
 
   async update(id: number, data: UpdateUserDto) {
