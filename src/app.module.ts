@@ -28,7 +28,7 @@ import { ConfigModule } from '@nestjs/config';
     synchronize: true,
   }),
   JwtModule.register({
-    secret: 'seeSharpSecurity',
+    secret: process.env.JWT_SECRET,
     global: true,
   }),
   AlbumsModule, AuthorsModule, MusicModule, SearchModule, UserModule, PlaylistModule, ListenersModule, AuthModule],
