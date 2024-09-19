@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Listeners } from './entities/listeners.entity';
-import { ListenersRepository } from './Listeners.repository';
+import { ListenersRepository } from './listeners.repository';
 import { CreateListenersDto } from './dto/create-listeners.dto';
 import { UpdateListenersDto } from './dto/update-listeners.dto';
 
