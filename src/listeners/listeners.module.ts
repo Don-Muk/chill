@@ -7,7 +7,7 @@ import { Listeners } from './entities/listeners.entity';
 import { MusicModule } from 'src/music/music.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Listeners]),MusicModule],
+    imports: [TypeOrmModule.forFeature([Listeners]),MusicModule, ListenersRepository],
     controllers: [ListenersController],
     providers: [ListenersService, ListenersRepository],
     exports: [ListenersRepository]
