@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ListenersController } from './listeners.controller';
-import { ListenersRepository } from './Listeners.repository';
+import { ListenersRepository } from './listeners.repository';
 import { ListenersService } from './listeners.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Listeners } from './entities/listeners.entity';
