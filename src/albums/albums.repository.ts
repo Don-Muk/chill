@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Albums } from './entities/albums.entity';
 import { UpdateAlbumsDto } from './dtos/update-albums.dto';
 import { CreateAlbumsDto } from './dtos/create-albums.dto';
+import { Listeners } from 'src/listeners/entities/listeners.entity';
 
 @Injectable()
 export class AlbumsRepository {
@@ -13,6 +14,21 @@ export class AlbumsRepository {
         return this.albumsRepo
         .createQueryBuilder('albums')
         .getMany()
+    }
+
+    findAllOrderBy(){
+        return this.albumsRepo.query(`
+            SELECT
+                al.*,
+                SUM(COUNT(ls.id)) OVER (PARTITION BY al.id) AS totalAlbumListeners
+            FROM
+                albums al
+                JOIN music_entity ms ON al.id = ms.albumsId
+                JOIN listeners ls ON ms.id = ls.musicId
+            GROUP BY
+                al.id
+            ORDER BY totalAlbumListeners DESC;
+          `);
     }
 
     findOne(id: number){
