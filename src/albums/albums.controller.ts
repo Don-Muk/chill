@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumsDto } from './dtos/create-albums.dto';
 import { UpdateAlbumsDto } from './dtos/update-albums.dto';
@@ -11,8 +11,12 @@ export class AlbumsController {
     
     @UseGuards(PublicGuard)
     @Get()
-    findAll(){
-        return this.albumsService.findAll();
+    findAll(@Query('orderby') orderby: boolean){
+        if(orderby === true){
+            return this.albumsService.findAllOrderBy();
+        } else {
+            return this.albumsService.findAll();
+        }
     }
 
     @UseGuards(PublicGuard)
