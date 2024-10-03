@@ -16,7 +16,7 @@ export class Albums {
     artistName: string;
 
     @OneToMany(() => MusicEntity, music => music.albums)
-    music: MusicEntity;
+    music: MusicEntity[];
 
     @CreateDateColumn()
     createdAt: Date;

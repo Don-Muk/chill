@@ -24,7 +24,7 @@ export class MusicEntity {
     @ManyToMany(() => Playlist, playlist => playlist.music)
     playlist: Playlist[];
 
-    @ManyToMany(() => Listeners, listeners => listeners.user)
+    @ManyToMany(() => Listeners, listeners => listeners.music)
     listeners: Listeners[];
 
     @CreateDateColumn()

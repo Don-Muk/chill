@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Albums } from './entities/albums.entity';
 import { UpdateAlbumsDto } from './dtos/update-albums.dto';
 import { CreateAlbumsDto } from './dtos/create-albums.dto';
+import { MusicEntity } from 'src/music/entities/music.entity';
 import { Listeners } from 'src/listeners/entities/listeners.entity';
 
 @Injectable()
@@ -16,21 +17,19 @@ export class AlbumsRepository {
         .getMany()
     }
 
-    findAllOrderBy(){
-        return this.albumsRepo.query(`
-            SELECT
-                al.*,
-                SUM(COUNT(ls.id)) OVER (PARTITION BY al.id) AS totalAlbumListeners
-            FROM
-                albums al
-                JOIN music_entity ms ON al.id = ms.albumsId
-                JOIN listeners ls ON ms.id = ls.musicId
-            GROUP BY
-                al.id
-            ORDER BY totalAlbumListeners DESC;
-          `);
+    async findAllOrderBy() {
+        return this.albumsRepo 
+        .createQueryBuilder('albums')
+        .leftJoinAndSelect(MusicEntity, 'music_entity', 'music_entity.albumsId = albums.id')
+        .leftJoin(Listeners, 'listeners', 'music_entity.id = listeners.musicId')
+        .select([
+            'albums.*',
+            'COUNT(listeners.id) AS totalAlbumListeners'
+        ])
+        .groupBy('albums.id')
+        .orderBy('totalAlbumListeners', 'DESC')
+        .getRawMany();
     }
-
     findOne(id: number){
         return this.albumsRepo
         .createQueryBuilder('albums')
