@@ -14,6 +14,10 @@ export class AlbumsService {
         return this.albumsRepository.findAll();
     }
 
+    async findAllOrderBy(){
+        return await this.albumsRepository.findAllOrderBy();
+    }
+
     async findOne(id: number){
         const album = await this.albumsRepository.findOne(id);
         if (!album) {
